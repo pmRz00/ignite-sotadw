@@ -58,6 +58,8 @@ ENV PATH "$PATH:/home/${USERNAME}/.dapr/bin"
 ENTRYPOINT [ "/usr/local/share/docker-init.sh" ]
 CMD [ "sleep", "infinity" ]
 
+RUN apt-get -y install python3-pip
+
 # [Optional] Uncomment this section to install additional OS packages.
 # RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 #     && apt-get -y install --no-install-recommends <your-package-list-here>
