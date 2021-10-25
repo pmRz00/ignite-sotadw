@@ -33,8 +33,11 @@ RUN if [ "${INSTALL_AZURE_CLI}" = "true" ]; then bash /tmp/library-scripts/azcli
     else \
         echo '#!/bin/bash\n"$@"' > /usr/local/share/docker-init.sh && chmod +x /usr/local/share/docker-init.sh; \
     fi \
+    # Install kubectl-helm
     && /bin/bash /tmp/library-scripts/kubectl-helm-debian.sh "latest" "latest" "none" \
-    && apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/* /tmp/library-scripts/
+    # Install Dapr
+    && wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O - | /bin/bash \
+    && rm -rf /var/lib/apt/lists/*
 
 # Install Terraform, tflint, Terragrunt
 ARG TERRAFORM_VERSION=0.12.16
@@ -48,6 +51,9 @@ RUN bash /tmp/library-scripts/terraform-debian.sh "${TERRAFORM_VERSION}" "${TFLI
 COPY copy-kube-config.sh /usr/local/share/
 RUN chown ${USERNAME}:root /usr/local/share/copy-kube-config.sh \
     && echo "source /usr/local/share/copy-kube-config.sh" | tee -a /root/.bashrc /root/.zshrc /home/${USERNAME}/.bashrc >> /home/${USERNAME}/.zshrc
+
+# Add daprd to the path for the VS Code Dapr extension.
+ENV PATH "$PATH:/home/${USERNAME}/.dapr/bin"
 
 ENTRYPOINT [ "/usr/local/share/docker-init.sh" ]
 CMD [ "sleep", "infinity" ]
