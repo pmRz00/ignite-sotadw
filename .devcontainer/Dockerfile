@@ -37,11 +37,6 @@ RUN if [ "${INSTALL_AZURE_CLI}" = "true" ]; then bash /tmp/library-scripts/azcli
     && /bin/bash /tmp/library-scripts/kubectl-helm-debian.sh "latest" "latest" "none" \
     # Install Dapr
     && wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O - | /bin/bash \
-    # Install Gremlin
-    && echo "deb https://deb.gremlin.com/ release non-free" | sudo tee /etc/apt/sources.list.d/gremlin.list \
-    && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 9CDB294B29A5B1E2E00C24C022E8EF3461A50EF6 \
-    && apt update \
-    && apt install -y gremlin gremlind \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Terraform, tflint, Terragrunt
