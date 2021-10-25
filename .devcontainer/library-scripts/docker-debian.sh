@@ -210,7 +210,6 @@ else
         echo "(*) Installing docker-compose ${DOCKER_DASH_COMPOSE_VERSION}..."
         curl -fsSL "https://github.com/docker/compose/releases/download/${DOCKER_DASH_COMPOSE_VERSION}/docker-compose-Linux-x86_64" -o /usr/local/bin/docker-compose
         chmod +x /usr/local/bin/docker-compose
-        pip3 install --disable-pip-version-check --no-warn-script-location  --no-cache-dir --user pipx
     fi
 fi
 
