@@ -33,7 +33,8 @@ RUN if [ "${INSTALL_AZURE_CLI}" = "true" ]; then bash /tmp/library-scripts/azcli
     else \
         echo '#!/bin/bash\n"$@"' > /usr/local/share/docker-init.sh && chmod +x /usr/local/share/docker-init.sh; \
     fi \
-    && rm -rf /var/lib/apt/lists/*
+    && /bin/bash /tmp/library-scripts/kubectl-helm-debian.sh "latest" "latest" "none" \
+    && apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/* /tmp/library-scripts/
 
 # Install Terraform, tflint, Terragrunt
 ARG TERRAFORM_VERSION=0.12.16
