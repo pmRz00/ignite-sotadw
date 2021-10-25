@@ -42,6 +42,11 @@ ARG TERRAGRUNT_VERSION=0.28.1
 RUN bash /tmp/library-scripts/terraform-debian.sh "${TERRAFORM_VERSION}" "${TFLINT_VERSION}" "${TERRAGRUNT_VERSION}" \
     && rm -rf /tmp/library-scripts
 
+# Script copies localhost's ~/.kube/config file into the container and swaps out 
+# localhost for host.docker.internal on bash/zsh start to keep them in sync.
+COPY copy-kube-config.sh /usr/local/share/
+RUN chown ${USERNAME}:root /usr/local/share/copy-kube-config.sh \
+    && echo "source /usr/local/share/copy-kube-config.sh" | tee -a /root/.bashrc /root/.zshrc /home/${USERNAME}/.bashrc >> /home/${USERNAME}/.zshrc
 
 ENTRYPOINT [ "/usr/local/share/docker-init.sh" ]
 CMD [ "sleep", "infinity" ]
